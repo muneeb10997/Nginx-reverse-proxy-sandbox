@@ -6,9 +6,9 @@ services:
       dockerfile: Dockerfile 
     image: app1-img:1
   
-    ports:
-      - '5001:5000'
-    container_name: app1-cont
+    # ports:
+    #   - '5001:5000'
+    container_name: app1
     networks:
       - my_network
     volumes:
@@ -19,9 +19,9 @@ services:
       context: /root/Nginx-reverse-proxy-sandbox/flask-nginx/app2 
       dockerfile: Dockerfile  
     image: app2-img:1 
-    ports:
-      - '5002:5000'
-    container_name: app2-cont
+    # ports:
+    #   - '5002:5000'
+    container_name: app2
     networks:
       - my_network
     volumes:
