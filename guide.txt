@@ -1,0 +1,71 @@
+Make Your Directory structure look like this:
+
+Nginx-reverse-proxy
+|
+|----->flask-nginx
+|      |---->app1
+|      |     |---->main.py 
+|      |     |---->Dockerfile
+|      |     |---->.dockerignore
+|      |           
+|      |---->app2
+|      |     |---->main.py 
+|      |     |---->Dockerfile
+|      |     |---->.dockerignore 
+|      |
+|      |---->docker-compose.yml
+|    
+|
+|----->nginx.conf
+|
+|----->script.sh
+
+Step 1: 
+      Run your script.sh file(commands for intalling your software and package like docker, docker-compose)
+      command (./script.sh) 
+Step 2:
+      write your Dockerfile for each application and also .dockerignore file
+Step 3:
+      write you docker-compose.yml file   
+Step 4:
+      write your configrations in nginx.conf file make sure it is bounded with the nginx.conf file inside the nginx container 
+      which you add in your Dockerfile
+Step 5:
+      Run docker-compose.yml file 
+      command (docker-compose up --build -d)
+
+now perform this requests
+
+----------------------------------------- curl requests --------------------------------------
+**********inside the nginx container accessing / and /home pages or routes******************
+root@d1a087a857c6:/nginx# curl http://localhost/    
+Hello from the home page of App1!
+root@d1a087a857c6:/nginx# curl http://localhost/home
+Hello from the home page of App2!
+root@d1a087a857c6:/nginx# 
+********************************************************************************************
+
+********inside app1-cont accessing the app2 /home page**************************************
+root@252ba472780c:/app1-dir# curl http://app2-cont:5000/home
+Hello from the home page of App2!
+********************************************************************************************
+
+********inside app2-cont accessing the app1 / page******************************************
+root@252ba472780c:/app2-dir# curl http://app1-cont:5000/
+Hello from the home page of App2!
+********************************************************************************************
+
+---------------------------------------pings:-----------------------------------------------
+***************ping app1-cont and app2-cont from nginx-cont*********************************
+............................................................................................
+apt-update ----> first update apt
+apt-get install iputils-ping --------->second install ping
+.......................do this step under all containers....................................
+
+************** now ping ********************************************************************
+root@252ba472780c:/nginx# ping app1-cont
+PING app1-cont (172.17.0.2) 56(84) bytes of data.
+
+root@252ba472780c:/nginx# ping app2-cont
+PING app2-cont (172.17.0.3) 56(84) bytes of data.
+********************************************************************************************
